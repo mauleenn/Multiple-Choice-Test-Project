@@ -15,6 +15,15 @@ public class StudentView {
 	private JFrame studentViewFrame;
 	private JTable table;
 	
+	public JFrame getStudentViewFrame() {
+		return studentViewFrame;
+	}
+	
+	public void setStudentViewFrame(JFrame studentViewFrame) {
+		this.studentViewFrame = studentViewFrame;
+	}
+	
+	
 	/**
 	 * Launch the application.
 	 */
