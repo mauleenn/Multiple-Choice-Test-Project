@@ -15,6 +15,16 @@ public class TeacherView {
 
 	private JFrame teacherViewFrame;
 	private JTable table;
+	
+	public JFrame getTeacherViewFrame() {
+		return teacherViewFrame;
+	}
+	
+	public void setTeacherViewFrame(JFrame teacherViewFrame) {
+		this.teacherViewFrame = teacherViewFrame;
+	}
+	
+	
 	/**
 	 * Launch the application.
 	 */
