@@ -74,6 +74,12 @@ CREATE TABLE public.test (
     answer_id integer NOT NULL
 );
 
+alter table only public.test
+add status varchar(5),
+add Grade int
+
+insert into public.test (id, question_id, answer_id, status, Grade) values
+(01, 3, 3, 0, 0)
 
 ALTER TABLE public.test OWNER TO postgres;
 
