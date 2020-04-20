@@ -164,29 +164,4 @@ public class TeacherView {
 		return status;
 		
 		}
-	
-	// *****************************************************
-	// VIEW QUESTIONS METHOD
-	// *****************************************************
-	
-	public void remove() {
-		try {
-			Connection conn = PostgresConn.connect();
-			PreparedStatement preparedstm = conn.prepareStatement("SELECT * FROM public.questions");
-			
-			
-			ResultSet rs = preparedstm.executeQuery();
-			
-			table.setModel(DbUtils.resultSetToTableModel(rs));
-			
-			//status = rs.next();
-			conn.close();
-			}
-			catch(Exception e) {
-				System.out.println(e);
-			}
-	}
-	
-	
-	
 }
