@@ -3,12 +3,19 @@ package indwes.database.UI;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import net.proteanit.sql.DbUtils;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
+import conn.PostgresConn;
 
 public class StudentView {
 
@@ -43,9 +50,15 @@ public class StudentView {
 	/**
 	 * Create the application.
 	 */
+	Connection connection = null;
+	Statement stmt = null;
+	PreparedStatement pstmt = null;
 	public StudentView() {
+		connection = PostgresConn.connect();
 		initialize();
+		select();
 	}
+
 
 	/**
 	 * Initialize the contents of the frame.
@@ -83,7 +96,25 @@ public class StudentView {
 		
 		// Row names for the table (Question ID, Question Name, and the Correct Answer)
 		table.setModel(new DefaultTableModel(new Object[][] {},
-				new String[] { "Test Name", "Status", "Grade" }));
+				new String[] { "Test Name", "question id", "answer id","Status", "Grade" }));
 	}
 
+	public void select() {
+		try {
+			
+		boolean bool = false;
+		
+		Connection conn = PostgresConn.connect();
+		PreparedStatement preparedstm = conn.prepareStatement("SELECT * FROM public.test");
+
+
+		ResultSet rs = preparedstm.executeQuery();
+		table.setModel(DbUtils.resultSetToTableModel(rs));
+		conn.close();
+		}
+		catch(Exception e) {
+		System.out.println(e);
+		}
+		}
 }
+
