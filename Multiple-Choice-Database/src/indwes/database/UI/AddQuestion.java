@@ -4,11 +4,19 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+
+import conn.PostgresConn;
+
 import javax.swing.JCheckBox;
 import javax.swing.JButton;
 import java.awt.Color;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.awt.event.ActionEvent;
 
 public class AddQuestion {
@@ -49,7 +57,11 @@ public class AddQuestion {
 	/**
 	 * Create the application.
 	 */
+	Connection connection = null;
+	Statement stmt = null;
+	PreparedStatement pstmt = null;
 	public AddQuestion() {
+		connection = PostgresConn.connect();
 		initialize();
 	}
 
@@ -132,15 +144,55 @@ public class AddQuestion {
 				// When this button is pressed, the question 
 				// should be added to the database and we should
 				// see a "success" message.
+				add();
 			}
 		});
 		submitButton.setForeground(Color.BLACK);
 		submitButton.setBackground(Color.LIGHT_GRAY);
 		submitButton.setBounds(351, 386, 117, 25);
 		getAddQuestionFrame().getContentPane().add(submitButton);
+
+	}
+	public void add() {
+
+		try {
+			String Question = questionTxtField.getText();
+			String answer1 = answerOneTxtField.getText();
+			String answer2 = answerTwoTxtField.getText();
+			String answer3 = answerThreeTxtField.getText();
+			String answer4 = answerFourTxtField.getText();
+			
+
+				
+	        String sql = "insert into questions(question)values(?)";  
+	        PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);  
+	        ps.setString(1, Question);  
+	        ps.execute();  
+
+
+	        ResultSet rs = ps.getGeneratedKeys();
+	        int newId = 0;
+	        if (rs.next()) {
+	        	 newId = rs.getInt(1);
+	        }
+	            String answerQuery = "insert into answers(id, answer)values((?),(?,?,?,?))";  
+		        PreparedStatement answerInsert = connection.prepareStatement(answerQuery);  
+		        answerInsert.setInt(1, newId);  
+		        answerInsert.setString(2, answer1);
+		        answerInsert.setString(3, answer2);
+		        answerInsert.setString(4, answer3);
+		        answerInsert.setString(5, answer4);
+		        answerInsert.executeUpdate();  
+		        JOptionPane.showMessageDialog(addQuestionFrame, "Added question and answers");
+	        
+		        ps.close();
+		        rs.close();
 		
-		
-		
-		
+
+		} catch (Exception ex) {
+			JOptionPane.showMessageDialog(null, ex);
+		}
 	}
 }
+
+	

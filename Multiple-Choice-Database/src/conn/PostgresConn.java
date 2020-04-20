@@ -8,16 +8,16 @@ public class PostgresConn {
 
 
 
-	 private final String url = "jdbc:postgresql://localhost/TestDB";
-	    private final String user = "postgres";
-	    private final String password = "j25";
+	 private final static String url = "jdbc:postgresql://localhost/TestDB";
+	    private final static String user = "postgres";
+	    private final static String password = "j25";
 
 	    /**
 	     * Connect to the PostgreSQL database
 	     *
 	     * @return a Connection object
 	     */
-	    public Connection connect() {
+	    public static Connection connect() {
 	        Connection conn = null;
 	        try {
 	            conn = DriverManager.getConnection(url, user, password);
