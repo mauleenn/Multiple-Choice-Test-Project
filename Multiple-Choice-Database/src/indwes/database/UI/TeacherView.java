@@ -7,10 +7,18 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
+import conn.PostgresConn;
+
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.awt.event.ActionEvent;
+import net.proteanit.sql.DbUtils;
 public class TeacherView {
 
 	private JFrame teacherViewFrame;
@@ -44,7 +52,13 @@ public class TeacherView {
 	/**
 	 * Create the application.
 	 */
+	// Database
+	Connection connection = null;
+	Statement stmt = null;
+	PreparedStatement pstmt = null;
+	
 	public TeacherView() {
+		connection = PostgresConn.connect(); // Connecting to the database
 		initialize();
 	}
 
@@ -64,6 +78,7 @@ public class TeacherView {
 				// When the "view" button is pressed, we will
 				// be able to view all the questions in the
 				// database.
+				view();
 			}
 		});
 		viewQuestionsButton.setBounds(655, 37, 117, 31);
@@ -124,4 +139,54 @@ public class TeacherView {
 				new String[] { "Question ID", "Question Name", "Correct Answer" }));
 		
 	}
+
+	// *****************************************************
+	// VIEW QUESTIONS METHOD
+	// *****************************************************
+	public boolean view() {
+		boolean status = false;
+		
+		try {
+		Connection conn = PostgresConn.connect();
+		PreparedStatement preparedstm = conn.prepareStatement("SELECT * FROM public.questions");
+		
+		
+		
+		ResultSet rs = preparedstm.executeQuery();
+		table.setModel(DbUtils.resultSetToTableModel(rs));
+		
+		status = rs.next();
+		conn.close();
+		}
+		catch(Exception e) {
+			System.out.println(e);
+		}
+		return status;
+		
+		}
+	
+	// *****************************************************
+	// VIEW QUESTIONS METHOD
+	// *****************************************************
+	
+	public void remove() {
+		try {
+			Connection conn = PostgresConn.connect();
+			PreparedStatement preparedstm = conn.prepareStatement("SELECT * FROM public.questions");
+			
+			
+			ResultSet rs = preparedstm.executeQuery();
+			
+			table.setModel(DbUtils.resultSetToTableModel(rs));
+			
+			//status = rs.next();
+			conn.close();
+			}
+			catch(Exception e) {
+				System.out.println(e);
+			}
+	}
+	
+	
+	
 }
