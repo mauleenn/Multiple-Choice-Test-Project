@@ -47,4 +47,7 @@ create table user_grades(
     foreign key (test_id) references test(ID),
     foreign key (user_id) references user_login(ID)
 );
-    
+   
+alter table test 
+add status varchar(20),
+add grade int
