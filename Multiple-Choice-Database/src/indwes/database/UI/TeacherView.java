@@ -5,17 +5,23 @@ import java.awt.EventQueue;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import conn.PostgresConn;
 
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.awt.event.ActionEvent;
 import net.proteanit.sql.DbUtils;
@@ -111,6 +117,9 @@ public class TeacherView {
 				// teacher is finished editing the new question, 
 				// they will press "submit" then a success message
 				// will show up.
+				removeEdit();
+				AddQuestion window = new AddQuestion();
+				window.getAddQuestionFrame().setVisible(true);
 			}
 		});
 		editQuestionsButton.setBounds(526, 37, 117, 31);
@@ -123,10 +132,14 @@ public class TeacherView {
 				// on the table then they press the remove button.
 				// When the question is removed from the table,
 				// it is also removed from the database.
+				remove();
 			}
 		});
 		removeQuestionsButton.setBounds(397, 37, 117, 31);
 		teacherViewFrame.getContentPane().add(removeQuestionsButton);
+		
+		
+		
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(29, 101, 743, 377);
@@ -148,7 +161,7 @@ public class TeacherView {
 		
 		try {
 		Connection conn = PostgresConn.connect();
-		PreparedStatement preparedstm = conn.prepareStatement("SELECT * FROM public.questions");
+		PreparedStatement preparedstm = conn.prepareStatement("SELECT * FROM questions");
 		
 		
 		
@@ -164,4 +177,111 @@ public class TeacherView {
 		return status;
 		
 		}
+	
+	public void remove() {
+		int row = table.getSelectedRow();
+		String cell = table.getModel().getValueAt(row, 0).toString();
+		
+		String sql = "DELETE FROM questions WHERE id = " + cell;
+		
+	//	DefaultTableModel model = (DefaultTableModel) table.getModel();
+		try {
+			pstmt = connection.prepareStatement(sql);
+			pstmt.execute();
+			JOptionPane.showMessageDialog(teacherViewFrame, "Question removed.");
+			updateTable();
+			
+		}catch(Exception e) {
+			System.out.println(e);
+		}
+		
+	}
+	
+	public void removeEdit() {
+		int row = table.getSelectedRow();
+		String cell = table.getModel().getValueAt(row, 0).toString();
+		
+		String sql = "DELETE FROM questions WHERE id = " + cell;
+		
+	//	DefaultTableModel model = (DefaultTableModel) table.getModel();
+		try {
+			pstmt = connection.prepareStatement(sql);
+			pstmt.execute();
+			updateTable();
+			
+		}catch(Exception e) {
+			System.out.println(e);
+		}
+		
+	}
+	
+	private void updateTable() {
+
+		try {
+			String sql = "select * from questions";
+			PreparedStatement pst = connection.prepareStatement(sql);
+
+			ResultSet rs = pst.executeQuery();
+			table.setModel(DbUtils.resultSetToTableModel(rs));
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
 }
+	
+
+	
+	
+	
+	
+	
+	
+	
+	/*public void edit() {
+		String sql = "UPDATE questions SET "
+	}
+		/*try {
+		int SelectedRowIndex = table.getSelectedRow();
+		model.removeRow(SelectedRowIndex);
+		
+		
+		} catch(Exception e) {
+			System.out.println(e);
+		}
+		
+		/*
+		
+		try {
+		
+		connection = PostgresConn.connect();
+		pstmt = connection.prepareStatement("DELETE FROM questions WHERE id = ?");
+
+		pstmt.setInt(1, bookID);
+		pstmt.executeUpdate();
+		connection.close();
+	} catch (Exception e) {
+		System.out.println(e);
+	}
+	
+
+		String ID = bookIDTxtField.getText();
+		int bookID = Integer.parseInt(ID);
+
+		int row = table.getSelectedRow();
+		if (row != -1) {
+			int modelRow = table.convertRowIndexToModel(row);
+			DefaultTableModel model = (DefaultTableModel) table.getModel();
+			String selected = model.getValueAt(row, 0).toString();
+			model.removeRow(modelRow);
+
+			int x = LibraryDao.removeBook(bookID);
+
+			if (x > 0) {
+				JOptionPane.showMessageDialog(null, "Book has been successfully deleted!");
+			}
+		}
+		clearFields();
+	}*/
