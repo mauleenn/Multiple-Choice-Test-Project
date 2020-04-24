@@ -1,6 +1,9 @@
 package indwes.database.UI;
 
+import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.SystemColor;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -9,6 +12,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.JToolBar;
+import javax.swing.UIManager;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
@@ -151,6 +156,36 @@ public class TeacherView {
 		table.setModel(new DefaultTableModel(new Object[][] {},
 				new String[] { "Question ID", "Question Name", "Correct Answer" }));
 		
+		
+		// When this button is pressed, the user will
+				// go back to the login page.
+				JButton backtoLoginButton = new JButton("Go Back to Login ");
+				backtoLoginButton.setBackground(SystemColor.controlShadow);
+				backtoLoginButton.setFont(new Font("Times New Roman", Font.BOLD, 13));
+
+				backtoLoginButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						Login window = new Login();
+						window.getLoginPageFrame().setVisible(true);
+					}
+				});
+				JButton exitButton = new JButton("  Exit   ");
+				exitButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						System.exit(0);
+					}
+				});
+				exitButton.setFont(new Font("Dialog", Font.BOLD, 13));
+				exitButton.setBackground(SystemColor.controlShadow);
+
+				// Toolbar with the 'exit' button and the 'login' button
+				JToolBar toolBar = new JToolBar();
+				toolBar.setBackground(UIManager.getColor("InternalFrame.borderLight"));
+				toolBar.setBounds(0, 0, 794, 31);
+				teacherViewFrame.getContentPane().add(toolBar);
+				toolBar.add(exitButton);
+				toolBar.addSeparator(new Dimension(10, 10));
+				toolBar.add(backtoLoginButton);
 	}
 
 	// *****************************************************
