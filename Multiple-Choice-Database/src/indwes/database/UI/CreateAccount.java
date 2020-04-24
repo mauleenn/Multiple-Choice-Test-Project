@@ -1,141 +1,106 @@
+  
 package indwes.database.UI;
 
-import java.awt.EventQueue;
-import java.awt.Font;
+import java.awt.BorderLayout;
+import java.awt.Color;
 
 import javax.swing.JFrame;
+import javax.swing.JTextArea;
+
+import conn.PostgresConn;
+
+import java.awt.FlowLayout;
+import javax.swing.JPanel;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
+import java.awt.Font;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
+import javax.swing.JScrollBar;
 
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+public class CreateTest extends JPanel {
+	public CreateTest() {
+	} static // Your class name 
+	//Connection connection;
+	
 
-public class CreateAccount {
-
-	private JFrame createAccountFrame;
-	private JTextField usernameTxtField;
-	private JPasswordField passwordTxtField;
-
-	// Getter and Setter for accessing this windwo
-	public JFrame getCreateAccountFrame() {
-		return createAccountFrame;
-	}
-
-	public void setCreateAccountFrame(JFrame createAccountFrame) {
-		this.createAccountFrame = createAccountFrame;
-	}
-
-	/**
-	 * Launch the application.
-	 */
+	JLabel question1Lbl = new JLabel(""); 
+	static JLabel answer1Lbl = new JLabel(""); 
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
+		
+		JFrame TestFrame = new JFrame("Take A Test");
+		TestFrame.setSize(867, 806);
+		TestFrame.setLocation(300, 200);
+		TestFrame.getContentPane().setLayout(null);
+		
+		JLabel Testlbl = new JLabel("This is a Test!");
+		Testlbl.setFont(new Font("Tahoma", Font.BOLD, 20));
+		Testlbl.setBounds(311, 39, 142, 27);
+		TestFrame.getContentPane().add(Testlbl);
+		
+		//JLabel question1Lbl = new JLabel("Q #1");
+		question1Lbl.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		question1Lbl.setBounds(89, 191, 646, 64);
+		TestFrame.getContentPane().add(question1Lbl);
+		
+		JLabel qLbl1 = new JLabel("Question 1:");
+		qLbl1.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		qLbl1.setBounds(89, 151, 268, 27);
+		TestFrame.getContentPane().add(qLbl1);
+		
+	//	JLabel answer1Lbl = new JLabel("Answer 1");
+		answer1Lbl.setBounds(89, 268, 350, 16);
+		TestFrame.getContentPane().add(answer1Lbl);
+		
+		JLabel answerLbl2 = new JLabel("Answer 2");
+		answerLbl2.setBounds(89, 297, 350, 16);
+		TestFrame.getContentPane().add(answerLbl2);
+		
+		JLabel answer3Lbl = new JLabel("Answer 3");
+		answer3Lbl.setBounds(89, 326, 350, 16);
+		TestFrame.getContentPane().add(answer3Lbl);
+		
+		JLabel lblAnswer_1_1 = new JLabel("Answer 4");
+		lblAnswer_1_1.setBounds(89, 355, 350, 16);
+		TestFrame.getContentPane().add(lblAnswer_1_1);
+		TestFrame.setVisible(true);
+
+		Connection connection = PostgresConn.connect();
+	
+		int id = 3;
 				try {
-					CreateAccount window = new CreateAccount();
-					window.getCreateAccountFrame().setVisible(true);
-				} catch (Exception e) {
+					
+					String qSql = "select question from questions where id=3";
+					Statement stmt = connection.createStatement();
+					ResultSet rs = stmt.executeQuery(qSql);
+					while(rs.next()) {
+						question1Lbl.setText(rs.getString("question"));
+					}
+					
+
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			}
-		});
-	}
+				try {
+					
+					String aSql = "select answer from answers where id=3";
+					Statement stmt = connection.createStatement();
+					ResultSet rs = stmt.executeQuery(aSql);
+					while(rs.next()) {
+						answer1Lbl.setText(rs.getString("answer"));
+					}
+					
 
-	/**
-	 * Create the application.
-	 */
-	public CreateAccount() {
-		initialize();
-	}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
-		setCreateAccountFrame(new JFrame());
-		getCreateAccountFrame().setTitle("Create Account");
-		getCreateAccountFrame().setBounds(100, 100, 504, 322);
-		getCreateAccountFrame().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		getCreateAccountFrame().getContentPane().setLayout(null);
-		
-		
-	
-		
-		JLabel lblUsername = new JLabel("Username:");
-		lblUsername.setBounds(87, 59, 90, 15);
-		createAccountFrame.getContentPane().add(lblUsername);
-		
-		JLabel lblPassword = new JLabel("Password:");
-		lblPassword.setBounds(87, 125, 90, 15);
-		createAccountFrame.getContentPane().add(lblPassword);
-		
-		
-		usernameTxtField = new JTextField();
-		usernameTxtField.setBounds(215, 50, 166, 34);
-		createAccountFrame.getContentPane().add(usernameTxtField);
-		usernameTxtField.setColumns(10);
-		
-		passwordTxtField = new JPasswordField();
-		passwordTxtField.setBounds(215, 116, 166, 34);
-		createAccountFrame.getContentPane().add(passwordTxtField);
-		
-		JCheckBox studentChkBox = new JCheckBox("Student");
-		studentChkBox.setBounds(70, 161, 90, 23);
-		createAccountFrame.getContentPane().add(studentChkBox);
-		studentChkBox.setSelected(false);
-		
-		JCheckBox teacherChkBox = new JCheckBox("Teacher");
-		teacherChkBox.setBounds(164, 157, 129, 31);
-		createAccountFrame.getContentPane().add(teacherChkBox);
-		teacherChkBox.setSelected(false);
-		
-		JLabel lblCreateAnAccount = new JLabel("Create An Account");
-		lblCreateAnAccount.setFont(new Font("Dialog", Font.BOLD, 14));
-		lblCreateAnAccount.setBounds(169, 12, 177, 15);
-		createAccountFrame.getContentPane().add(lblCreateAnAccount);
-		
-		
-		
-		JButton btnRegister = new JButton("Register");
-		btnRegister.addActionListener(new ActionListener() {
-			@SuppressWarnings("deprecation")
-			public void actionPerformed(ActionEvent arg0) {
-				
-				// If the user checks the "teacher" checkbox, 
-				// they will be taken to the Teacher View.
-				if(teacherChkBox.isSelected()) {
-					TeacherView window = new TeacherView();
-					window.getTeacherViewFrame().setVisible(true);
-				}
-				
-				// If the user checks the "student" checkbox, 
-				// they will be taken to the Student View.
-				else if (studentChkBox.isSelected()) {
-					StudentView window = new StudentView();
-					window.getStudentViewFrame().setVisible(true);
-				}
-				else if (usernameTxtField.getText().equals("") || passwordTxtField.getText().equals("")) {
-					JOptionPane.showMessageDialog(null, "You must enter a username or password");
-				}
-			}
-		});
-		btnRegister.setBounds(189, 225, 117, 25);
-		createAccountFrame.getContentPane().add(btnRegister);
-		
-		JButton backButton = new JButton("<");
-		backButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				Login window = new Login();
-				window.getLoginPageFrame().setVisible(true);
-			}
-		});
-		backButton.setBounds(12, 2, 44, 25);
-		createAccountFrame.getContentPane().add(backButton);
-		
+
+
 	}
 }
