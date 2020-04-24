@@ -2,6 +2,8 @@ package indwes.database.UI;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Desktop.Action;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 
@@ -16,6 +18,7 @@ import conn.PostgresConn;
 import net.proteanit.sql.DbUtils;
 
 import javax.swing.AbstractButton;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
@@ -24,6 +27,8 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.awt.event.ActionEvent;
 import java.awt.SystemColor;
+import javax.swing.JToolBar;
+import javax.swing.SwingConstants;
 
 public class Login {
 
@@ -134,8 +139,8 @@ public class Login {
 		getLoginPageFrame().getContentPane().add(teacherChkBox);
 		teacherChkBox.setSelected(false);
 
-		JButton btnLogin = new JButton("Login");
-		btnLogin.addActionListener(new ActionListener() {
+		JButton loginButton = new JButton("Login");
+		loginButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String ID = IDTxtField.getText();
 				int id = Integer.parseInt(ID);
@@ -194,22 +199,43 @@ public class Login {
 
 			}
 		});
-		btnLogin.setBounds(138, 218, 117, 25);
-		getLoginPageFrame().getContentPane().add(btnLogin);
+		loginButton.setBounds(222, 222, 117, 25);
+		getLoginPageFrame().getContentPane().add(loginButton);
 
 		// If the user does not have an account,
 		// they will be taken to the "Sign Up"
 		// page.
-		JButton btnSignUp = new JButton("Sign Up");
-		btnSignUp.addActionListener(new ActionListener() {
+		JButton signUpButton = new JButton("Sign Up");
+		signUpButton.setFont(new Font("Dialog", Font.BOLD, 13));
+		signUpButton.setBackground(SystemColor.controlShadow);
+		signUpButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				CreateAccount window = new CreateAccount();
 				window.getCreateAccountFrame().setVisible(true);
 			}
 		});
-		btnSignUp.setBounds(279, 218, 117, 25);
-		getLoginPageFrame().getContentPane().add(btnSignUp);
-
+		signUpButton.setBounds(279, 218, 117, 25);
+		
+		JToolBar toolBar = new JToolBar();
+		toolBar.setBackground(SystemColor.inactiveCaption);
+	//	toolBar.setPreferredSize(new Dimension(450, 200));
+		toolBar.setBounds(0, 0, 558, 31);
+		loginPageFrame.getContentPane().add(toolBar);
+		//getLoginPageFrame().getContentPane().add(btnSignUp);
+		
+		JButton exitButton = new JButton("  Exit   ");
+		exitButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
+		exitButton.setFont(new Font("Dialog", Font.BOLD, 13));
+		exitButton.setBackground(SystemColor.controlShadow);
+		
+		toolBar.add(exitButton);
+		toolBar.addSeparator(new Dimension(10, 10));
+		toolBar.add(signUpButton);
+		
 	}
 
 	public void login() {
