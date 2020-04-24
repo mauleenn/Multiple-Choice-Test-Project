@@ -36,42 +36,7 @@ public class StudentView {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-			}package indwes.database.UI;
-
-import java.awt.EventQueue;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import net.proteanit.sql.DbUtils;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
-
-import conn.PostgresConn;
-
-public class StudentView {
-
-	private JFrame studentViewFrame;
-	private JTable table;
-	
-	public JFrame getStudentViewFrame() {
-		return studentViewFrame;
-	}
-	
-	public void setStudentViewFrame(JFrame studentViewFrame) {
-		this.studentViewFrame = studentViewFrame;
-	}
-	
-	
-	/**
-	 * Launch the application.
-	 */
+			}
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
