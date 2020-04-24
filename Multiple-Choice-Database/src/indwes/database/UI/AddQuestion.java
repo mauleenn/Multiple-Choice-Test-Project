@@ -84,20 +84,20 @@ public class AddQuestion {
 		getAddQuestionFrame().getContentPane().add(questionTxtField);
 		questionTxtField.setColumns(10);
 		
-		JLabel answerOneLabel = new JLabel("Answer #1:");
-		answerOneLabel.setBounds(37, 142, 93, 15);
+		JLabel answerOneLabel = new JLabel("Correct Answer:");
+		answerOneLabel.setBounds(12, 142, 118, 15);
 		getAddQuestionFrame().getContentPane().add(answerOneLabel);
 		
-		JLabel answerTwoLabel = new JLabel("Answer #2:");
-		answerTwoLabel.setBounds(37, 199, 93, 15);
+		JLabel answerTwoLabel = new JLabel("Wrong Answer 1:");
+		answerTwoLabel.setBounds(12, 199, 118, 15);
 		getAddQuestionFrame().getContentPane().add(answerTwoLabel);
 		
-		JLabel answerThreeLabel = new JLabel("Answer #3:");
-		answerThreeLabel.setBounds(37, 258, 93, 15);
+		JLabel answerThreeLabel = new JLabel("Wrong answer 2:");
+		answerThreeLabel.setBounds(12, 258, 118, 15);
 		getAddQuestionFrame().getContentPane().add(answerThreeLabel);
 		
-		JLabel answerFourLabel = new JLabel("Answer #4:");
-		answerFourLabel.setBounds(37, 316, 93, 15);
+		JLabel answerFourLabel = new JLabel("Wrong answer 3:");
+		answerFourLabel.setBounds(12, 316, 118, 15);
 		getAddQuestionFrame().getContentPane().add(answerFourLabel);
 		
 		answerOneTxtField = new JTextField();
@@ -119,24 +119,6 @@ public class AddQuestion {
 		answerFourTxtField.setColumns(10);
 		answerFourTxtField.setBounds(137, 311, 527, 26);
 		getAddQuestionFrame().getContentPane().add(answerFourTxtField);
-		
-		
-		// Checkboxes that determine if an answer is correct
-		JCheckBox answerOneCheckBox = new JCheckBox();
-		answerOneCheckBox.setBounds(672, 138, 35, 23);
-		getAddQuestionFrame().getContentPane().add(answerOneCheckBox);
-		
-		JCheckBox answerTwoCheckBox = new JCheckBox();
-		answerTwoCheckBox.setBounds(672, 195, 35, 23);
-		getAddQuestionFrame().getContentPane().add(answerTwoCheckBox);
-		
-		JCheckBox answerThreeCheckBox = new JCheckBox();
-		answerThreeCheckBox.setBounds(672, 254, 35, 23);
-		getAddQuestionFrame().getContentPane().add(answerThreeCheckBox);
-		
-		JCheckBox answerFourCheckBox = new JCheckBox();
-		answerFourCheckBox.setBounds(672, 312, 35, 23);
-		getAddQuestionFrame().getContentPane().add(answerFourCheckBox);
 		
 		JButton submitButton = new JButton("Submit");
 		submitButton.addActionListener(new ActionListener() {
@@ -175,7 +157,7 @@ public class AddQuestion {
 	        if (rs.next()) {
 	        	 newId = rs.getInt(1);
 	        }
-	            String answerQuery = "insert into answers(id, answer)values((?),(?,?,?,?))";  
+	            String answerQuery = "insert into answers(id, correct_answer, wrong_answer1, wrong_answer2, wrong_answer3)values((?),?,?,?,?)";  
 		        PreparedStatement answerInsert = connection.prepareStatement(answerQuery);  
 		        answerInsert.setInt(1, newId);  
 		        answerInsert.setString(2, answer1);
