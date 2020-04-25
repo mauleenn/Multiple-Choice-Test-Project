@@ -72,7 +72,7 @@ public class AddQuestion {
 		setAddQuestionFrame(new JFrame());
 		getAddQuestionFrame().setTitle("Add Question");
 		getAddQuestionFrame().setBounds(100, 100, 808, 520);
-		getAddQuestionFrame().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		getAddQuestionFrame().setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		getAddQuestionFrame().getContentPane().setLayout(null);
 		
 		JLabel questionLabel = new JLabel("Question:");
