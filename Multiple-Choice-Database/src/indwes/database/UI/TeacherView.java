@@ -79,7 +79,7 @@ public class TeacherView {
 	private void initialize() {
 		teacherViewFrame = new JFrame();
 		teacherViewFrame.setTitle("Teacher View");
-		teacherViewFrame.setBounds(100, 100, 808, 520);
+		teacherViewFrame.setBounds(100, 100, 1008, 649);
 		teacherViewFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		teacherViewFrame.getContentPane().setLayout(null);
 		
@@ -147,14 +147,14 @@ public class TeacherView {
 		
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(29, 101, 743, 377);
+		scrollPane.setBounds(29, 101, 943, 501);
 		teacherViewFrame.getContentPane().add(scrollPane);
 		table = new JTable();
 		scrollPane.setViewportView(table);
 		
 		// Row names for the table (Question ID, Question Name, and the Correct Answer
 		table.setModel(new DefaultTableModel(new Object[][] {},
-				new String[] { "Question ID", "Question Name", "Correct Answer" }));
+				new String[] { "Question ID", "Question Name", "Correct Answer"}));
 		
 		
 		// When this button is pressed, the user will
@@ -181,7 +181,7 @@ public class TeacherView {
 				// Toolbar with the 'exit' button and the 'login' button
 				JToolBar toolBar = new JToolBar();
 				toolBar.setBackground(UIManager.getColor("InternalFrame.borderLight"));
-				toolBar.setBounds(0, 0, 794, 31);
+				toolBar.setBounds(0, 0, 994, 31);
 				teacherViewFrame.getContentPane().add(toolBar);
 				toolBar.add(exitButton);
 				toolBar.addSeparator(new Dimension(10, 10));
@@ -196,9 +196,9 @@ public class TeacherView {
 		
 		try {
 		Connection conn = PostgresConn.connect();
-		PreparedStatement preparedstm = conn.prepareStatement("SELECT * FROM questions");
-		
-		
+		PreparedStatement preparedstm = conn.prepareStatement("SELECT q.id, q.question, a.correct_answer FROM questions q INNER JOIN answers a ON a.id = q.id WHERE q.id =a.id ");
+		// "SELECT * FROM questions q INNER JOIN answers a ON a.id = q.id WHERE q.id is NULL"
+		//"SELECT * FROM questions"
 		
 		ResultSet rs = preparedstm.executeQuery();
 		table.setModel(DbUtils.resultSetToTableModel(rs));
@@ -275,48 +275,4 @@ public class TeacherView {
 	
 	
 	
-	/*public void edit() {
-		String sql = "UPDATE questions SET "
-	}
-		/*try {
-		int SelectedRowIndex = table.getSelectedRow();
-		model.removeRow(SelectedRowIndex);
-		
-		
-		} catch(Exception e) {
-			System.out.println(e);
-		}
-		
-		/*
-		
-		try {
-		
-		connection = PostgresConn.connect();
-		pstmt = connection.prepareStatement("DELETE FROM questions WHERE id = ?");
-
-		pstmt.setInt(1, bookID);
-		pstmt.executeUpdate();
-		connection.close();
-	} catch (Exception e) {
-		System.out.println(e);
-	}
 	
-
-		String ID = bookIDTxtField.getText();
-		int bookID = Integer.parseInt(ID);
-
-		int row = table.getSelectedRow();
-		if (row != -1) {
-			int modelRow = table.convertRowIndexToModel(row);
-			DefaultTableModel model = (DefaultTableModel) table.getModel();
-			String selected = model.getValueAt(row, 0).toString();
-			model.removeRow(modelRow);
-
-			int x = LibraryDao.removeBook(bookID);
-
-			if (x > 0) {
-				JOptionPane.showMessageDialog(null, "Book has been successfully deleted!");
-			}
-		}
-		clearFields();
-	}*/
